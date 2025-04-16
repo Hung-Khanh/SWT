@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Date Checker</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #0f0f10;
+                color: white;
+                text-align: center;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 400px;
+                margin: 50px auto;
+                background: #1a1a1a;
+                padding: 20px;
+                border-radius: 8px;
+                animation: fadeIn 0.5s ease-in-out;
+            }
+            input,
+            button {
+                width: 100%;
+                margin: 5px 0;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+            }
+            input {
+                background: #000;
+                color: white;
+            }
+            button {
+                background: #4caf50;
+                color: white;
+                cursor: pointer;
+            }
+            button:hover {
+                background: #45a049;
+            }
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+        <script>
+            function isLeapYear(year) {
+                return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+            }
+
+            function isValidDate(day, month, year) {
+                if (isNaN(day) || isNaN(month) || isNaN(year)) return false;
+                if (day <= 0 || month <= 0 || year <= 0) return false;
+                if (month > 12) return false;
+
+                let daysInMonth = [
+                    31,
+                    isLeapYear(year) ? 29 : 28,
+                    31,
+                    30,
+                    31,
+                    30,
+                    31,
+                    31,
+                    30,
+                    31,
+                    30,
+                    31,
+                ];
+
+                return day <= daysInMonth[month - 1];
+            }
+
+            function validateDate() {
+                let day = document.getElementById('day').value.trim();
+                let month = document.getElementById('month').value.trim();
+                let year = document.getElementById('year').value.trim();
+                let result = document.getElementById('dateResult');
+
+                if (day === '' || month === '' || year === '') {
+                    result.innerHTML = '❌ Please enter a valid date';
+                    result.style.color = 'red';
+                    return;
+                }
+                day = parseInt(day);
+                month = parseInt(month);
+                year = parseInt(year);
+
+                if (!isValidDate(day, month, year)) {
+                    result.innerHTML = '❌ Invalid Date';
+                    result.style.color = 'red';
+                } else {
+                    result.innerHTML = '✅ Valid Date';
+                    result.style.color = 'green';
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Date Checker</h2>
+            <input
+                type="number"
+                id="day"
+                placeholder="Day (1-31)"
+                min="1"
+                max="31"
+            />
+            <input
+                type="number"
+                id="month"
+                placeholder="Month (1-12)"
+                min="1"
+                max="12"
+            />
+            <input
+                type="number"
+                id="year"
+                placeholder="Year (YYYY)"
+                min="1900"
+                max="2100"
+            />
+            <button onclick="validateDate()">Check Date</button>
+            <p id="dateResult"></p>
+        </div>
+    </body>
+</html>
